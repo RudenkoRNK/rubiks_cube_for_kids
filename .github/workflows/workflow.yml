@@ -1,0 +1,34 @@
+name: LaTeX workflow
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # See https://github.com/xu-cheng/latex-docker
+    container:
+      image: ghcr.io/xu-cheng/texlive-full:latest
+      options: --workdir /home/latex
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Install more fonts
+      run: |
+        apk --no-cache add msttcorefonts-installer fontconfig
+        update-ms-fonts
+        fc-cache -f
+        mktextfm larm1000
+        mktextfm larm1200
+    - name: Compile LaTeX document
+      run: latexmk -interaction=nonstopmode -f
+    - name: Upload a build artifact
+      uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        if-no-files-found: ignore
+        name: output
+        path: build/main.pdf
