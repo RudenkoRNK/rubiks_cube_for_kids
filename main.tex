@@ -1,0 +1,495 @@
+\input{preamble}
+
+%\def\ANSWERS
+
+\author{Никита Руденко}
+\title{Кубик Рубика для детей}
+\date{}
+
+
+\renewcommand{\RubikCubeSolved}{\RubikSolvedConfig{G}{B}{Y}{W}{R}{O}}
+
+\begin{document}
+\maketitle
+
+\section{Введение}
+
+Кубик Рубика — механическая головоломка, изобретённая в 1974 году венгерским скульптором и преподавателем архитектуры Эрнё Рубиком \cite{wiki:cube}.
+
+\begin{figure}[h]
+    \centering
+    \RubikCubeSolved
+    \ShowCube{\textwidth/2}{1}{\DrawRubikCubeRU}
+    \caption{Собранный кубик Рубика $3\times 3\times 3$}
+    \label{fig:solved}
+\end{figure}
+
+У кубика есть несколько \emph{сторон} или, по-другому, \emph{граней}.
+На рисунке \ref{fig:solved} представлен полностью собранный кубик, у которого видно три стороны --- желтую, красную и зеленую.
+
+\begin{exercise}
+    Внимательно рассмотрите кубик.
+    Сколько всего у него сторон?
+    Сколько всего цветов?
+    Какие это цвета?
+\end{exercise}
+
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        У кубика 6 граней и 6 цветов.
+    \end{answer}
+}{}
+
+
+\begin{exercise}
+    Кубик как-будто состоит из кубиков поменьше, называемых \emph{элементами}.
+    Посчитайте, из какого количества элементов состоит кубик Рубика размера $3\times 3\times 3$.
+\end{exercise}
+
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        Он состоит из 26 или 27 элементов, в зависимости от того будете ли вы учитывать элемент в самом центре кубика, которого не видно.
+    \end{answer}
+}{}
+
+Кубик состоит из трех типов элементов, называемых \emph{центрами}, \emph{ребрами} и \emph{уголками}.
+На рисунке \ref{fig:elements} приведены пояснения.
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{ccc}
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{X}{X}
+        {X}{Y}{X}
+        {X}{X}{X}
+        \RubikFaceRight
+        {X}{X}{X}
+        {X}{G}{X}
+        {X}{X}{X}
+        \RubikFaceFront
+        {X}{X}{X}
+        {X}{R}{X}
+        {X}{X}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{Y}{X}
+        {Y}{X}{Y}
+        {X}{Y}{X}
+        \RubikFaceRight
+        {X}{G}{X}
+        {G}{X}{G}
+        {X}{G}{X}
+        \RubikFaceFront
+        {X}{R}{X}
+        {R}{X}{R}
+        {X}{R}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {Y}{X}{Y}
+        {X}{X}{X}
+        {Y}{X}{Y}
+        \RubikFaceRight
+        {G}{X}{G}
+        {X}{X}{X}
+        {G}{X}{G}
+        \RubikFaceFront
+        {R}{X}{R}
+        {X}{X}{X}
+        {R}{X}{R}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+        \\
+        Центральные элементы
+         &
+        Ребра
+         &
+        Уголки
+    \end{tabular}
+    \caption{Три типа элементов кубика.}
+    \label{fig:elements}
+\end{figure}
+
+\begin{exercise}
+    Перемешайте кубик.
+    Найдите центральный элемент белого цвета.
+    Какого цвета центральный элемент с противоположной стороны кубика?
+    Повторите то же самое с зеленым и оранжевым центральными элементами.
+
+    Снова хорошо перемешайте кубик и ответьте на те же вопросы.
+    Изменились ли ответы?
+    Если нет, то попробуйте перемешать еще раз и снова ответить на те же вопросы.
+\end{exercise}
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        Белый цвет всегда располагается напротив желтого, красный напротив оранжевого, а зеленый напротив синего.
+        Математики говорят, что это \emph{инвариант кубика}.
+    \end{answer}
+}{}
+
+\begin{theorem}[Первый инвариант кубика]\label{th:inv_1}
+    Никакими разрешенными поворотами кубика невозможно изменить относительное положение центральных элементов.
+    Белый всегда будет располагаться напротив желтого, красный напротив оранжевого, а зеленый напротив синего.
+\end{theorem}
+\ifdef{\ANSWERS}{
+    \begin{proof}
+        Нужно заметить, что любой поворот кубика может менять положение уголков и ребер, но никогда не меняет положения центральных элементов.
+    \end{proof}
+}{}
+\begin{exercise}
+    Докажите теорему \ref{th:inv_1}.
+\end{exercise}
+
+\begin{corollary}\label{th:adjacent}
+    Не существует ребер бело-желтого цвета или уголков, на которых есть одновременно зеленый и синий цвета.
+\end{corollary}
+\ifdef{\ANSWERS}{
+    \begin{proof}
+        Рассмотрим полностью собранный кубик.
+        Если бы было ребро бело-желтого цвета, то белый и желтый должны были быть смежными цветами.
+        Значит, желтый и белый центральные элементы тоже должны были быть смежными.
+        По теореме \ref{th:inv_1} это невозможно.
+    \end{proof}
+}{}
+\begin{exercise}
+    Докажите следствие \ref{th:adjacent}.
+\end{exercise}
+
+Поскольку положение центральных элементов не может меняться, то цвет стороны собранного кубика всегда определяется его центральным элементом.
+Поэтому, даже на несобранном кубике говорят <<желтая сторона>> и имеют ввиду ту сторону, у которой цвет центрального элемента желтый.
+
+
+\section{Формулы}
+Кубик собирается с помощью \emph{алгоритма}, который описывается \emph{формулами}.
+Для того чтобы научиться собирать кубик необходимо уметь читать и записывать эти формулы.
+
+Возьмите кубик двумя руками.
+Сторона которую вы видите прямо перед собой называется \emph{фронтальной}.
+Она обозначается буквой \emph{Ф}.
+
+Сторона, которую вы держите правой рукой называется \emph{правой}, обозначается буквой \emph{П}.
+Сторона, которую вы держите левой рукой называется \emph{левой}, обозначается буквой \emph{Л}.
+Аналогично, сверху находится \emph{верхняя (В)}, снизу --- \emph{нижняя (Н)} стороны.
+
+\begin{exercise}
+    Переведите на английский язык названия сторон: верх, низ, лево, право, фронт, зад.
+\end{exercise}
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        Up, Down, Left, Right, Front, Back.
+    \end{answer}
+}{}
+
+На рисунке \ref{fig:sides} показаны названия сторон.
+Обратите внимание, что названия сторон не связаны с цветами.
+Например, желтый цвет может быть верхней, так и нижней стороной, в зависимости от того как ориентирован ваш кубик.
+
+\begin{figure}[H]
+    \centering
+    \RubikCubeSolved
+    \begin{tabular}{x{0.45\textwidth} x{0.45\textwidth}}
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeLD
+            \node[align=left] at (-2,1) {\large Лево};
+            \node[align=left] at (1,-1.5) {\large Низ};
+            \node[align=left] at (1.5,1.5) [white]{\large Фронт};
+        }
+         &
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \node[align=left] at (5,2) {\large Право};
+            \node[align=left] at (2,4.5) {\large Верх};
+            \node[align=left] at (1.5,1.5) [white]{\large Фронт};
+        }
+    \end{tabular}
+    \caption{
+        Обозначения сторон.
+        Верхняя (В), Правая (П), Левая (Л), Нижняя (Н) и Фронтальная (Ф).
+    }
+    \label{fig:sides}
+\end{figure}
+
+В таблице \ref{tab:rotations} приведены изображения поворотов и их обозначений.
+
+
+\begin{table}[H]
+    \centering
+    \RubikCubeSolved
+    \begin{tabular}{x{0.3\textwidth} x{0.3\textwidth} x{0.3\textwidth}}
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=1mm] (2.5, 0.5) -- (2.5,2.5);
+        }
+         &
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=1mm] (2.5, 2.5) -- (0.5,2.5);
+        }
+         &
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=1mm] (2.5,1.5) arc (0:-340:1);
+        }
+        \\
+        П --- поворот правой стороны от себя
+         &
+        В --- поворот верхней стороны справа налево
+         &
+        Ф --- поворот фронтальной стороны по часовой стрелке
+        \\ & \\
+
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=1mm] (0.5,2.5) -- (0.5, 0.5);
+        }
+         &
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=1mm] (0.5, 0.5) -- (2.5, 0.5);
+        }
+         &
+        \ShowCube{0.3\textwidth}{1}{
+            \DrawRubikCubeRU
+            \draw[->,line width=0.5mm] (3.85, 1.2) -- (3.85,3.2);
+            \draw[->,line width=0.5mm] (3.2, 3.85) -- (1.2,3.85);
+        }
+        \\
+        Л --- поворот левой стороны на себя
+         &
+        Н --- поворот нижней стороны слева направо
+         &
+        З --- поворот задней стороны против часовой стрелки
+    \end{tabular}
+    \caption{Повороты кубика и их обозначения}
+    \label{tab:rotations}
+\end{table}
+
+Добавления штриха (') к букве означает поворот в обратную сторону.
+Добавление цифры означает повторение поворота несколько раз.
+
+\begin{exercise}
+    Что происходит с кубиком при выполнении формулы П4?
+\end{exercise}
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        Ничего.
+        Математики говорят, что это \emph{тождественное} или \emph{единичное} преобразование.
+    \end{answer}
+}{}
+
+\section{Первый слой}
+Кубик $3\times 3\times 3$ состоит из трех слоев.
+На рисунке \ref{fig:slices} показаны эти слои.
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{x{0.3\textwidth} x{0.3\textwidth} x{0.3\textwidth}}
+        \RubikCubeGreyAll
+        \RubikFaceDownAll{W}
+        \RubikSliceBottomR{R}{R}{R} {G}{G}{G}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRD}
+         &
+        \RubikCubeGreyAll
+        \RubikSliceMiddleR{R}{R}{R} {G}{G}{G}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUpAll{Y}
+        \RubikSliceTopR{R}{R}{R} {G}{G}{G}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+        \\
+        Первый слой
+         &
+        Второй слой
+         &
+        Третий слой
+    \end{tabular}
+    \caption{Три слоя кубика $3\times 3\times 3$.}
+    \label{fig:slices}
+\end{figure}
+
+Для сборки кубика необходимо сначала собрать первый слой, затем второй слой и, наконец, третий слой.
+Сборка первого слоя начинается со сборки \emph{креста}.
+
+Пример собранного креста изображен на рисунке \ref{fig:cross} слева.
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{x{0.45\textwidth} x{0.45\textwidth}}
+        \RubikCubeGreyAll
+        \RubikFaceDown
+        {X}{W}{X}
+        {W}{W}{W}
+        {X}{W}{X}
+        \RubikSliceBottomR{X}{R}{X} {X}{O}{X}
+        \ShowCube{\textwidth/2}{1}{\DrawRubikCubeRD}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceDown
+        {X}{W}{X}
+        {W}{W}{W}
+        {X}{W}{X}
+        \RubikSliceMiddleR{X}{R}{X} {X}{G}{X}
+        \RubikSliceBottomR{X}{R}{X} {X}{G}{X}
+        \ShowCube{\textwidth/2}{1}{\DrawRubikCubeRD}
+        \\
+        Крест
+         &
+        Правильный крест
+    \end{tabular}
+    \caption{Примеры собранных крестов.}
+    \label{fig:cross}
+\end{figure}
+
+\begin{exercise}
+    Научитесь собирать крест.
+\end{exercise}
+
+Второй шаг заключается в сборке \emph{правильного креста}.
+У правильного креста цвета ребер совпадают с цветами центральных элементов, как показано на рисунке \ref{fig:cross} справа.
+
+
+\begin{exercise}
+    Может ли число ребер креста, которые совпадают цветом с центральными элементами равняться 3?
+    Докажите это.
+\end{exercise}
+\ifdef{\ANSWERS}{
+    \begin{answer}
+        Не может.
+        Без потери общности будем считать, что собран белый крест и совпадают ребра зеленого, синего и красного цветов.
+        Оставшееся ребро не может быть бело-зеленым, бело-синим и бело-красным, так как они уже использованы.
+        Но ребер с белым цветом всего четыре, поэтому остается только ребро бело-оранжевого цвета.
+        При этом оставшаяся сторона тоже оранжевого цвета.
+    \end{answer}
+}{}
+
+\begin{exercise}
+    Соберите крест.
+    Повращайте слой с крестом.
+    Постарайтесь добиться наибольшего совпадения цветов ребер с цветом центральных элементов.
+    Повторите упражнение несколько раз.
+\end{exercise}
+
+\begin{theorem}\label{th:cross}
+    Поворотами слоя с собранным крестом можно всегда добиться совпадения цветов как минимум двух ребер с центральными элементами.
+\end{theorem}
+\iffalse
+    \ifdef{\ANSWERS}{
+        \begin{proof}
+            Довернем слой с крестом так, чтобы совпадал хотя бы одного ребра с цветом центра (очевидно, что так сделать можно).
+            Возможно два варианта: либо после поворота уже совпадает минимум два ребра, либо совпадает ровно одно.
+            В первом случае теорема выполнена.
+            Рассмотрим второй случай.
+        \end{proof}
+    }{}
+\fi
+
+\begin{exercise}
+    Попробуйте доказать теорему \ref{th:cross}.
+\end{exercise}
+
+
+Предположим, что цвета ровно двух ребер креста совпадают с центральными элементами.
+Существуют два принципиально разных случая совпадения этих ребер.
+В первом случае не совпадают два соседних ребра.
+Во втором --- два противоположных.
+В таблице \ref{tab:cross} приведены эти примеры и формулы для их решения.
+Не забудьте ориентировать ваш кубик также, как на картинках.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{x{0.45\textwidth} x{0.45\textwidth}}
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{W}{X}
+        {W}{W}{W}
+        {X}{W}{X}
+        \RubikSliceMiddleR{X}{G}{X} {X}{R}{X}
+        \RubikSliceTopR{X}{R}{X} {X}{G}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{W}{X}
+        {W}{W}{W}
+        {X}{W}{X}
+        \RubikSliceMiddleR{X}{G}{X} {X}{R}{X}
+        \RubikSliceTopR{X}{B}{X} {X}{R}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+        \\
+        Первый случай.
+        Не совпадают два соседних ребра.
+        Решение --- ПВ'П'ВП
+         &
+        Второй случай.
+        Не совпадают противоположные ребра.
+        Решение --- П2Л2В2П2Л2
+    \end{tabular}
+    \caption{Сборка правильного креста}
+    \label{tab:cross}
+\end{table}
+
+
+\begin{exercise}
+    Постарайтесь понять как работают формулы из таблицы \ref{tab:cross}.
+\end{exercise}
+
+После сборки креста необходимо собрать уголки первого слоя.
+Ориентируйте кубик так, чтобы собранный крест располагался снизу.
+Найдите уголок с белым цветом на верхнем слое и поставьте его так, чтобы он находился между боковыми сторонами других двух своих цветов.
+Поставьте уголок на нижний слой, воспользовавшись формулами из таблицы \ref{tab:first_layer}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{x{0.3\textwidth} x{0.3\textwidth} x{0.3\textwidth}}
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{X}{X}
+        {X}{X}{X}
+        {X}{X}{G}
+        \RubikSliceTopR{X}{X}{R} {W}{X}{X}
+        \RubikSliceMiddleR{X}{R}{X} {X}{G}{X}
+        \RubikSliceBottomR{X}{R}{X} {X}{G}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{X}{X}
+        {X}{X}{X}
+        {X}{X}{R}
+        \RubikSliceTopR{X}{X}{W} {G}{X}{X}
+        \RubikSliceMiddleR{X}{R}{X} {X}{G}{X}
+        \RubikSliceBottomR{X}{R}{X} {X}{G}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+         &
+        \RubikCubeGreyAll
+        \RubikFaceUp
+        {X}{X}{X}
+        {X}{X}{X}
+        {X}{X}{W}
+        \RubikSliceTopR{X}{X}{G} {R}{X}{X}
+        \RubikSliceMiddleR{X}{R}{X} {X}{G}{X}
+        \RubikSliceBottomR{X}{R}{X} {X}{G}{X}
+        \ShowCube{0.3\textwidth}{1}{\DrawRubikCubeRU}
+        \\
+        Первый случай.
+        Уголок смотрит вправо.
+        Решение --- ПВП'
+         &
+        Второй случай.
+        Уголок смотрит влево.
+        Решение --- ВПВ'П'
+         &
+        Третий случай.
+        Уголок смотрит вверх.
+        Решение --- ПВ2П'В', после чего случай сводится к предыдущим двум.
+    \end{tabular}
+    \caption{Сборка уголков первого слоя.}
+    \label{tab:first_layer}
+\end{table}
+
+\pagebreak
+\printbibliography
+
+\end{document}
